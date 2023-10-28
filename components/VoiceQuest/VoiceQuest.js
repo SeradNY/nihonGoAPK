@@ -9,13 +9,12 @@ import SpeechToTextButton from '../SpeechToTextButton/SpeechToTextButton';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
-export default function CardQuestion(props) {
+export default function VoiceQuest({ lesson }) {
     const [levelActive, setlevelActive] = useState(5);
     const [poolWords, setpoolWords] = useState(null)
     const [wordSelected, setlwordSelected] = useState();
     const [correctWords, setlcorrectWords] = useState([]);
     const [transcription, setTranscription] = useState(null)
-    const { lesson, type } = props
 
     const getWordsByLesson = () => {
         const data = []
@@ -38,18 +37,17 @@ export default function CardQuestion(props) {
         check(transcription, "voice")
     }, [transcription])
 
-    console.log("correctWords", correctWords)
+    console.log("correctWords voice", correctWords)
 
     const getQuestionsWords = () => {
         const pool = data;
-        const maxAnswers = 4;
+        const maxAnswers = 1;
         const itemsSelected = []
 
-        while (itemsSelected.length < maxAnswers) {
-            var r = Math.floor(Math.random() * pool.length);
-            if (itemsSelected.indexOf(pool[r]) === -1 && correctWords.indexOf(pool[r]) === -1) itemsSelected.push(pool[r]);
-            setpoolWords(itemsSelected.sort(() => Math.random() - 0.5))
-        }
+        var r = Math.floor(Math.random() * pool.length);
+        if (itemsSelected.indexOf(pool[r]) === -1 && correctWords.indexOf(pool[r]) === -1) itemsSelected.push(pool[r]);
+        setpoolWords(itemsSelected.sort(() => Math.random() - 0.5))
+        console.log("itemsSelected", itemsSelected[Math.floor(Math.random() * maxAnswers)])
         setlwordSelected(itemsSelected[Math.floor(Math.random() * maxAnswers)])
     }
 
@@ -72,24 +70,14 @@ export default function CardQuestion(props) {
         }
     }
 
-    console.log("type1", type)
-    console.log("lesson", lesson)
-
     return (
         <View>
             <View style={styles.cardContainer}>
-                {wordSelected ? <Text style={styles.textWord}>{type ? wordSelected.kj || wordSelected.furigana : wordSelected.furigana || wordSelected.word || wordSelected.jp}</Text> : <Text>Loading...</Text>}
+                {wordSelected ? <Text style={styles.textWord}>{wordSelected.esp || wordSelected.furigana || wordSelected.word || wordSelected.jp}</Text> : <Text>Loading...</Text>}
             </View >
             {poolWords &&
                 <View style={styles.buttonAnsers}>
-                    <View>
-                        {poolWords.map(function (object, i) {
-                            return <ButtonAnswer key={`anwers-${i}`} label={poolWords[i].meaning || poolWords[i].esp} check={() => check(poolWords[i])} />;
-                        })}
-                    </View>
-                    <View>
-                        <SpeechToTextButton setTranscription={word => setTranscription(word)} />
-                    </View>
+                    <SpeechToTextButton setTranscription={word => setTranscription(word)} />
                 </View>
             }
         </View>

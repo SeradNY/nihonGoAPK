@@ -1,7 +1,7 @@
 export const l34 = [
     {
         "jp": "みがきます",
-        "kj": "みがきます",
+        "kj": "磨きます",
         "esp": "lavarse dientes",
         "lesson": 34,
         "type": "v"

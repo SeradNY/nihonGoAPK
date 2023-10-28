@@ -6,18 +6,33 @@ import { delArrayItem } from '../../utils/delArrayItem';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
-export default function MenuLateral({ nivel, setNivel, lesson, setLesson }) {
+export default function MenuLateral({ nivel, setNivel, lesson, setLesson, game, setGame }) {
     const [levels, setlevels] = useState(false)
     const [lessons, setlessons] = useState(false)
     const [games, setgames] = useState(false)
 
     const filterLessons = (newLesson) => {
         if (lesson.indexOf(newLesson) === -1) {
-            setLesson([...lesson, newLesson])
+            if (newLesson.length > 2) {
+                console.log("2")
+                setLesson(newLesson)
+            } else {
+                console.log("3")
+                setLesson([...lesson, newLesson])
+            }
         } else {
+            console.log("4")
             const delItem = delArrayItem(lesson, lesson.indexOf(newLesson))
             setLesson(delItem)
         }
+    }
+
+    const allLeassons = () => {
+        var all = [];
+        for (let i = 26; i <= 50; i++) {
+            all.push(i)
+        }
+        return all
     }
 
     const lessonsArray = [];
@@ -60,6 +75,9 @@ export default function MenuLateral({ nivel, setNivel, lesson, setLesson }) {
                 </View>
                 {lessons &&
                     <View style={styles.menuItemContainer}>
+                        <Pressable onPress={() => filterLessons(allLeassons())} key={`lesson-todo`}>
+                            <Text style={lesson.length > 3 ? styles.active : styles.menuItemLabel}>TODO</Text>
+                        </Pressable>
                         {lessonsArray}
                     </View >
                 }
@@ -73,8 +91,15 @@ export default function MenuLateral({ nivel, setNivel, lesson, setLesson }) {
                 </View>
                 {games &&
                     <View style={styles.menuItemContainer}>
-                        <Text style={styles.menuItemLabel}>Radom Questions</Text>
-                        <Text style={styles.menuItemLabel}>Writing</Text>
+                        <Pressable onPress={() => setGame('questCard')}>
+                            <Text style={game === 'questCard' ? styles.active : styles.menuItemLabel}>Radom Questions</Text>
+                        </Pressable>
+                        <Pressable onPress={() => setGame("questCard")}>
+                            <Text style={game === "questCard" ? styles.active : styles.menuItemLabel}>Writing</Text>
+                        </Pressable>
+                        <Pressable onPress={() => setGame("questVoice")}>
+                            <Text style={game === "questVoice" ? styles.active : styles.menuItemLabel}>Voice Quest</Text>
+                        </Pressable>
                     </View>
                 }
             </View>

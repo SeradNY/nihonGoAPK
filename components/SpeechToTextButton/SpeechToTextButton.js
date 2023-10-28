@@ -9,7 +9,7 @@ export default function SpeechToTextButton({ setTranscription }) {
         recognition.lang = "ja-JP";
         recognition.continuous = false;
         recognition.interimResults = false;
-        recognition.maxAlternatives = 5;
+        recognition.maxAlternatives = 10;
 
         recognition.onresult = (event) => {
             const result = event.results[0];

@@ -8,10 +8,10 @@ var height = Dimensions.get('window').height; //full height
 export default function NavBar(props) {
     return (
         <View style={styles.NavBar}>
-            <Pressable style={styles.menu} onPress={() => props.click()}>
+            <Pressable style={styles.menu} onPress={() => props.openMenu()}>
                 <Entypo name="menu" size={24} color="#fff" />
             </Pressable>
-            <Pressable style={styles.menu} onPress={() => alert('You pressed a button.')}>
+            <Pressable style={styles.menu} onPress={() => props.changeType()}>
                 <Entypo name="language" size={18} color="#fff" />
             </Pressable>
         </View>

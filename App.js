@@ -5,39 +5,62 @@ import { StatusBar } from 'expo-status-bar';
 import CardQuestion from './components/CardQuestion/CardQuestion';
 import NavBar from './components/NavBar/Navbar';
 import MenuLateral from './components/MenuLateral/MenuLateral';
+import VoiceQuest from './components/VoiceQuest/VoiceQuest';
 
 export default function App() {
   const [menu, setmenu] = useState(false);
-  const [game, setgame] = useState(0);
+  const [game, setgame] = useState("questCard");
+  const [start, setstart] = useState(false);
   const [lesson, setlesson] = useState([26]);
   const [nivel, setnivel] = useState(0);
+  const [changeType, setchangetype] = useState(false)
+
+  const selectGame = () => {
+    const games = {
+      "questCard": <CardQuestion
+        lesson={lesson}
+        nivel={nivel}
+        type={changeType} />,
+      "questVoice": <VoiceQuest
+        lesson={lesson}
+        nivel={nivel}
+        type={changeType} />
+    }
+    console.log("gameNumber", game)
+    return games[game]
+  }
 
   useEffect(() => {
-  }, [lesson, nivel])
+    console.log("change", lesson)
+    console.log("game", game)
+    console.log("type", changeType)
+  }, [lesson, nivel, changeType])
 
   return (
     <View>
       <View style={styles.navBar}>
-        <NavBar click={() => setmenu(!menu)}></NavBar>
+        <NavBar openMenu={() => setmenu(!menu)} changeType={() => setchangetype(!changeType)}></NavBar>
       </View>
       {menu &&
         <MenuLateral
           lesson={lesson}
           nivel={nivel}
+          game={game}
           setLesson={(ls) => setlesson(ls)}
-          setNivel={(nv) => setnivel(nv)}>
+          setNivel={(nv) => setnivel(nv)}
+          setGame={(gm) => setgame(gm)}
+        >
         </MenuLateral>}
 
       <View style={styles.container}>
-        {!game ?
-          <Pressable style={styles.button} onPress={() => setgame(!game)}>
+        {!start ?
+          <Pressable style={styles.button} onPress={() => setstart(!start)}>
             <Text style={styles.text}>Start Game</Text>
           </Pressable>
-          : <CardQuestion
-            lesson={lesson}
-            nivel={nivel} />
-
-
+          :
+          <View>
+            {selectGame()}
+          </View>
         }
       </View>
       <StatusBar style="auto" />

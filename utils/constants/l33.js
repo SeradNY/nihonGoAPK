@@ -197,7 +197,7 @@ export const l33 = [
     },
     {
         "jp": "いくら〜ても",
-        "kj": "いくら〜ても",
+        "kj": "いくらても",
         "esp": "por más que ~",
         "type": "adv",
         "lesson": 33
